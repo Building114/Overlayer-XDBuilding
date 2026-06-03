@@ -1,1 +1,16 @@
 Overlayer/packages/
+packages/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+[Bb]in/
+[Oo]bj/
+*.pdb
+*.cache
+*.tmp
+*.log
+.DS_Store
+Thumbs.db
+desktop.ini

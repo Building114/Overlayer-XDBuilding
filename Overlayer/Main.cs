@@ -180,30 +180,51 @@ public static class Main {
         GUI.Flush();
     }
 
-    public static void OnGUI(ModEntry modEntry) {
+    public static void OnGUI(ModEntry modEntry)
+    {
         Settings.useAutoUpdate = false;
         Settings.useAutoUpdateBeta = false;
 
         tooltip = "";
         GUI.Draw();
+
         GUILayout.Space(30);
         GUILayout.BeginHorizontal();
-        if(Drawer.Button(Drawer.icon_Discord, " Discord")) {
+
+        if (Drawer.Button(Drawer.icon_Discord, " Discord"))
+        {
             Application.OpenURL("https://discord.modlist.org/");
         }
-        if(Drawer.Button(Drawer.icon_Github, " GitHub")) {
+
+        if (Drawer.Button(Drawer.icon_Github, " Original GitHub"))
+        {
             Application.OpenURL("https://github.com/modlist-org/Overlayer");
         }
+
+        if (Drawer.Button(Drawer.icon_Github, " Overlayer v5"))
+        {
+            Application.OpenURL("https://github.com/modlist-org/Overlayer-v5");
+        }
+
+        if (Drawer.Button(Drawer.icon_Github, " XDB Source"))
+        {
+            Application.OpenURL("https://github.com/Building114/Overlayer-XDBuilding");
+        }
+
         GUILayout.FlexibleSpace();
         GUILayout.EndHorizontal();
+
         GUILayout.Label("AutoUpdater disabled in Overlayer-XDB.");
 
-        if(!RGUI.PopupWindow.isOpen) {
-            if(Settings.useTooltip) {
+        if (!RGUI.PopupWindow.isOpen)
+        {
+            if (Settings.useTooltip)
+            {
                 Drawer.Tooltip(tooltip);
             }
         }
     }
+
 
     public static void OnHideGUI(ModEntry modEntry) {
         IsShowGUI = false;

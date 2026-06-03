@@ -33,3 +33,22 @@ The XDB patch notes mention JipperResourcePack as a public reference for changed
 
 No JipperResourcePack source code is bundled in this repository unless explicitly stated elsewhere.
 If code is copied from that project in the future, its license must be checked and included here.
+
+## NuGet dependencies
+
+This project uses NuGet dependencies listed in `Overlayer/packages.config`.
+
+Known dependencies include:
+
+- ncalc 1.3.8
+- System.Buffers
+- System.IO.Compression.ZipFile
+- System.Memory
+- System.Numerics.Vectors
+- System.Runtime.CompilerServices.Unsafe
+- System.Threading.Tasks.Extensions
+
+These packages are not committed into this repository.
+They should be restored through NuGet when building the project.
+
+For binary releases, the included dependency DLLs should keep their original license notices where required.
