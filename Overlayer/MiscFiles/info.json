@@ -1,0 +1,8 @@
+{
+    "AssemblyName": "Overlayer.dll",
+    "Author": "Original: modlist.org & Square3ang; Patch: XDBuilding",
+    "DisplayName": "Overlayer (XDB Patch v3.42.2)",
+    "EntryMethod": "Overlayer.Main.Load",
+    "Id": "Overlayer",
+    "Version": "3.42.2"
+}  

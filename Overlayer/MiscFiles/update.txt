@@ -1,0 +1,13 @@
+[ XDB Patch 3.42.2 | 临时过渡版 ]
+此版本为社区基于3.42.0（即https://github.com/modlist-org/Overlayer/releases/tag/3.42.0）的临时补丁，仅用于在官方新版发布前维持正常使用。
+
+[ Fix ]
+修复了文件对话框（导入/导出 JSON）在部分环境下因等待子进程而导致游戏卡死的问题，改用带超时的异步等待。
+修复了使用 Thread.Abort() 强行终止线程可能导致崩溃的问题，并改用 CancellationToken 配合超时等待，线程安全地退出。
+
+[ Improve ]
+多数字段优先读取新版本的字段以兼容 r141+ 中的变更。感谢 JipperResourcePack （即https://github.com/Jongye0l/JipperResourcePack） 提供的新字段名称。
+现在选到格式损坏的文件时只会在日志中报错，不会打断整个导入流程。
+加入对 XPerfect 模组的软兼容。
+重构了解析器，并加入了部分条件与逻辑判断。
+禁用了 AutoUpdater （自动更新）功能。

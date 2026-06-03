@@ -1,0 +1,254 @@
+﻿// XDB Patch modification: 2026-06-03
+// Purpose: compatibility with ADOFAI r141+ field and method changes.
+// Based on modlist-org/Overlayer 3.42.0, licensed under GPL-3.0.
+
+using Overlayer.Controllers;
+using Overlayer.Core;
+using Overlayer.Core.Patches;
+using Overlayer.Core.TextReplacing;
+using Overlayer.Core.Translation;
+using Overlayer.Patches;
+using Overlayer.Tags;
+using Overlayer.Tags.Attributes;
+using Overlayer.Unity;
+using Overlayer.Utils;
+using Overlayer.Views;
+using RapidGUI;
+using System;
+using System.Collections;
+using System.IO;
+using System.Reflection;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using static UnityModManagerNet.UnityModManager;
+using static UnityModManagerNet.UnityModManager.ModEntry;
+
+namespace Overlayer;
+#if DEBUG
+[UnityModManagerNet.EnableReloading]
+#endif
+public static class Main {
+    [Tag(NotPlaying = true)]
+    public static string Developer => Lang.Get("MISC_DEVELOPER", "Square3ang & Kkitut. Display everything as you wish. Thank you for being with Overlayer.");
+    [Tag(NotPlaying = true)]
+    public static string MipaNyang => "MipaNyang is God";
+    [Tag(NotPlaying = true)]
+    public static string Kyulio => "Kyulio is Sexy";
+
+    public static Assembly Ass { get; private set; }
+    public static ModEntry Mod { get; private set; }
+    [Tag(NotPlaying = true)] public static ModLogger Logger { get; private set; }
+    [Tag(NotPlaying = true)] public static Settings Settings { get; private set; }
+    public static GUIController GUI { get; private set; }
+    public static Scene ActiveScene { get; private set; }
+    [Tag(NotPlaying = true)] public static Translator Lang { get; internal set; }
+    [Tag(NotPlaying = true)] public static Version ModVersion => Mod.Version;
+    public static bool IsShowGUI { get; private set; } = false;
+    private static UpdatePopup popup;
+
+    public static string tooltip = "";
+    public static string UpdateInfo = "";
+
+    private static bool updateOnce = true;
+
+    public static Texture2D Logo;
+
+    internal static Wiki.Wiki Wiki;
+
+    internal static Olly.Olly Eg;
+    private static bool _egEnabled = false;
+    internal static bool EgEnabled {
+        get => _egEnabled;
+        set {
+            if(_egEnabled != value) {
+                if(value) {
+                    if(Olly.OllyResources.LoadAll(Mod)) {
+                        Eg = new GameObject().AddComponent<Olly.Olly>();
+                        UnityEngine.Object.DontDestroyOnLoad(Eg);
+                        Eg.Init();
+                        _egEnabled = value;
+                    }
+                } else {
+                    UnityEngine.Object.Destroy(Eg.gameObject);
+                    Eg.Release();
+                    Eg = null;
+                    Olly.OllyResources.UnloadAll();
+                    _egEnabled = value;
+                }
+            }
+        }
+    }
+
+    public static void Load(ModEntry modEntry) {
+        Logger = modEntry.Logger;
+        Ass = Assembly.GetExecutingAssembly();
+        Mod = modEntry;
+
+        Version needReload = AutoUpdater.UpdateBeforeLoad(modEntry);
+        if(needReload != null) {
+            FieldInfo versionField = typeof(ModEntry).GetField("Version", BindingFlags.Instance | BindingFlags.Public);
+            versionField?.SetValue(modEntry, needReload);
+            modEntry.Info.Version = needReload.ToString();
+
+            AutoUpdater.Reload(modEntry);
+        }
+
+        GUI = new GUIController();
+        Lang = new Translator();
+        modEntry.OnToggle = OnToggle;
+        modEntry.OnShowGUI = OnShowGUI;
+        modEntry.OnGUI = OnGUI;
+        modEntry.OnHideGUI = OnHideGUI;
+        modEntry.OnSaveGUI = OnSaveGUI;
+        SceneManager.activeSceneChanged += (f, t) => ActiveScene = t;
+        MiscUtils.SetAttr(TMPro.TMP_Settings.instance, "m_warningsDisabled", true);
+    }
+
+    public static IEnumerator LoadCoroutine(ModEntry modEntry) {
+        yield return null;
+        while(!RDString.initialized) {
+            yield return null;
+        }
+
+        TextManager.Initialize();
+        yield return null;
+    }
+    public static bool OnToggle(ModEntry modEntry, bool toggle) {
+        if(toggle) {
+            StaticCoroutine.Run(null);
+            StaticCoroutine.Run(LoadCoroutine(modEntry));
+            Settings = ModSettings.Load<Settings>(modEntry);
+            Settings.useAutoUpdate = false;
+            Settings.useAutoUpdateBeta = false;
+            Lang.Language = Settings.Lang;
+            Lang.OnInitialize += OnLanguageInitialize;
+            var settingsDrawer = new SettingsDrawer(Settings);
+            Lang.OnInitialize += () => settingsDrawer.NeedLangInit = true;
+            _ = Lang.Load(Path.Combine(Mod.Path, "lang"));
+            LazyPatchManager.Load(Ass);
+            LazyPatchManager.PatchInternal();
+            Tag.InitializeWrapperAssembly();
+            OverlayerTag.Initialize();
+            TagManager.Initialize();
+            TagManager.Load(Ass);
+            PlayerHitStats.RegisterOverrides();
+            FontManager.Initialize();
+            TagResetter.Postfix();
+            Tags.System.Init();
+            DllImporter.NCalcInitialize();
+            if(!Settings.disableLogo) {
+                LogoInit(modEntry.Path);
+            }
+
+            GUI.Init(settingsDrawer);
+            GUI.Flush();
+
+            if(updateOnce) {
+                updateOnce = false;
+                AutoUpdater.UpdateBeforeLoad(Mod);
+            }
+        } else {
+            if(EgEnabled) {
+                EgEnabled = false;
+            }
+            if(Logo != null) {
+                Logo = null;
+            }
+            Tags.System.Free();
+            TextManager.Release();
+            FontManager.Release();
+            TagManager.Release();
+            OverlayerTag.Release();
+            Tag.ReleaseWrapperAssembly();
+            LazyPatchManager.UnloadAll();
+            Lang.Release();
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, true);
+            ModSettings.Save(Settings, modEntry);
+        }
+
+        return true;
+    }
+
+    public static void OnShowGUI(ModEntry modEntry) {
+        IsShowGUI = true;
+        popup = new GameObject().AddComponent<UpdatePopup>();
+        UnityEngine.Object.DontDestroyOnLoad(popup);
+        popup.Initialize();
+
+        //CodeEditor.CodeEditor.ignoreTextAreaNext.Clear();
+
+        GUI.Flush();
+    }
+
+    public static void OnGUI(ModEntry modEntry) {
+        Settings.useAutoUpdate = false;
+        Settings.useAutoUpdateBeta = false;
+
+        tooltip = "";
+        GUI.Draw();
+        GUILayout.Space(30);
+        GUILayout.BeginHorizontal();
+        if(Drawer.Button(Drawer.icon_Discord, " Discord")) {
+            Application.OpenURL("https://discord.modlist.org/");
+        }
+        if(Drawer.Button(Drawer.icon_Github, " GitHub")) {
+            Application.OpenURL("https://github.com/modlist-org/Overlayer");
+        }
+        GUILayout.FlexibleSpace();
+        GUILayout.EndHorizontal();
+        GUILayout.Label("AutoUpdater disabled in Overlayer-XDB.");
+
+        if(!RGUI.PopupWindow.isOpen) {
+            if(Settings.useTooltip) {
+                Drawer.Tooltip(tooltip);
+            }
+        }
+    }
+
+    public static void OnHideGUI(ModEntry modEntry) {
+        IsShowGUI = false;
+        //CodeEditor.CodeEditor.ignoreTextAreaNext.Clear();
+        Drawer.codeEditor.undoRedoManagers.Clear();
+        GUI.Flush();
+    }
+
+    public static void OnSaveGUI(ModEntry modEntry) {
+        TextManager.Save();
+        ModSettings.Save(Settings, modEntry);
+    }
+
+    public static bool IsPlaying {
+        get {
+            var ctrl = scrController.instance;
+            var cdt = scrConductor.instance;
+            return ctrl != null && cdt != null && !VersionSafe.IsPaused(ctrl) && VersionSafe.IsGameWorld(ctrl);
+        }
+    }
+
+    public static void OnLanguageInitialize() {
+        string[] translatorLogs = Lang.Logs;
+        if(translatorLogs != null && translatorLogs.Length > 0) {
+            foreach(var log in translatorLogs) {
+                Logger.Log(log);
+            }
+        }
+    }
+
+    public static void LogoInit(string path) {
+        string logopath = Path.Combine(path, "ov3_logo.png");
+        if(System.IO.File.Exists(logopath)) {
+            byte[] fileData = System.IO.File.ReadAllBytes(logopath);
+            Logo = new Texture2D(2, 2, TextureFormat.RGBA32, false);
+            ImageLoaderCompat.LoadImage(Logo, fileData);
+        }
+        else {
+            Logger.Log("Logo image not found!");
+        }
+    }
+    public static void LogoRelease() {
+        if(Logo != null) {
+            UnityEngine.Object.Destroy(Logo);
+            Logo = null;
+        }
+    }
+}
