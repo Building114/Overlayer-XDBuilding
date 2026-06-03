@@ -1,4 +1,4 @@
-﻿namespace Overlayer.CodeEditor;
+namespace Overlayer.CodeEditor;
 
 public class CodeTheme {
     public string background { get; set; }

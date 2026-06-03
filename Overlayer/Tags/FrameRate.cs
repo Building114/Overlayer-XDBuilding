@@ -1,4 +1,4 @@
-﻿using Overlayer.Tags.Attributes;
+using Overlayer.Tags.Attributes;
 using UnityEngine;
 
 namespace Overlayer.Tags;

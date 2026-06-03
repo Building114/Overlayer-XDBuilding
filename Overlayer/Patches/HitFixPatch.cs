@@ -1,4 +1,4 @@
-﻿using HarmonyLib;
+using HarmonyLib;
 using Overlayer.Core.Patches;
 using System.Collections.Generic;
 using System.Reflection;

@@ -1,4 +1,4 @@
-﻿using Overlayer.Core;
+using Overlayer.Core;
 using UnityEngine;
 
 namespace Overlayer.Wiki;

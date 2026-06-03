@@ -1,4 +1,4 @@
-﻿namespace Overlayer.Olly;
+namespace Overlayer.Olly;
 
 public static class OllyUtils {
     public static void InitLanguage() => isKorean = Main.Lang.Language == "ko-KR";

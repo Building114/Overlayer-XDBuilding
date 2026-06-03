@@ -1,4 +1,4 @@
-﻿namespace Overlayer.Tags;
+namespace Overlayer.Tags;
 
 public static class TUF {
 

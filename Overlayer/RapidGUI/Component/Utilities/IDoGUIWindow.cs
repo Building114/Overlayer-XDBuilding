@@ -1,4 +1,4 @@
-﻿namespace RapidGUI;
+namespace RapidGUI;
 
 public interface IDoGUIWindow {
     void DoGUIWindow();

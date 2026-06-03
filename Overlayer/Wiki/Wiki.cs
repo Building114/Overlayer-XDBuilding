@@ -1,4 +1,4 @@
-﻿using Overlayer.Core;
+using Overlayer.Core;
 using RapidGUI;
 using System.Collections.Generic;
 using System.IO;

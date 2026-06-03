@@ -1,4 +1,4 @@
-﻿namespace RapidGUI;
+namespace RapidGUI;
 
 /// <summary>
 /// DoGUI interface

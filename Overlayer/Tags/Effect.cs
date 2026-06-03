@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using Overlayer.Core;
 using Overlayer.Core.TextReplacing;
 using Overlayer.Tags.Attributes;

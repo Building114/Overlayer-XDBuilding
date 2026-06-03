@@ -1,4 +1,4 @@
-﻿using Overlayer.Core.TextReplacing.Lexing;
+using Overlayer.Core.TextReplacing.Lexing;
 using Overlayer.Core.TextReplacing.Parsing;
 using System;
 using System.Collections.Generic;

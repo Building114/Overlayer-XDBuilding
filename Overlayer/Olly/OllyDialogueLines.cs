@@ -1,4 +1,4 @@
-﻿using static Overlayer.Olly.OllyDialogue;
+using static Overlayer.Olly.OllyDialogue;
 using static Overlayer.Olly.OllyState;
 using static Overlayer.Olly.OllyUtils;
 

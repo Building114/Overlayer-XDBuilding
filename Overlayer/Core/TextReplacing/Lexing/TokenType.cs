@@ -1,4 +1,4 @@
-﻿namespace Overlayer.Core.TextReplacing.Lexing;
+namespace Overlayer.Core.TextReplacing.Lexing;
 
 public enum TokenType {
     Identifier,

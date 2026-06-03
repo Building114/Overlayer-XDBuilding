@@ -1,4 +1,4 @@
-﻿using NCalc;
+using NCalc;
 using Overlayer.Models;
 using RapidGUI;
 using System;

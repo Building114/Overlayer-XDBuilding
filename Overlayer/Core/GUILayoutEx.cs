@@ -1,4 +1,4 @@
-﻿using Overlayer.Utils;
+using Overlayer.Utils;
 using System;
 using System.Collections.Generic;
 using UnityEngine;

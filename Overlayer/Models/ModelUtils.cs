@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Linq;
 using Overlayer.Core.Interfaces;
 using System;
 using System.Collections.Generic;

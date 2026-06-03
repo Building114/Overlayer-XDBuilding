@@ -1,4 +1,4 @@
-﻿using Overlayer.Core.Patches;
+using Overlayer.Core.Patches;
 
 namespace Overlayer.Tags.Patches;
 

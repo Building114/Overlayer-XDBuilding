@@ -1,4 +1,4 @@
-﻿using Overlayer.Core.TextReplacing.Lexing;
+using Overlayer.Core.TextReplacing.Lexing;
 using Overlayer.Tags.Attributes;
 using Overlayer.Unity;
 using System;

@@ -1,4 +1,4 @@
-﻿using Overlayer.Core;
+using Overlayer.Core;
 using Overlayer.Core.TextReplacing;
 using Overlayer.Models;
 using Overlayer.Tags;

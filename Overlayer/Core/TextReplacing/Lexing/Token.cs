@@ -1,4 +1,4 @@
-﻿namespace Overlayer.Core.TextReplacing.Lexing;
+namespace Overlayer.Core.TextReplacing.Lexing;
 
 public class Token {
     public TokenType type;

@@ -1,4 +1,4 @@
-﻿namespace RapidGUI.imColorPicker;
+namespace RapidGUI.imColorPicker;
 
 public class IMColorPickerEditor {
 

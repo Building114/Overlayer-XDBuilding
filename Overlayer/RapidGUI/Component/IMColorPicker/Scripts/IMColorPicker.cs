@@ -1,4 +1,4 @@
-﻿using Overlayer;
+using Overlayer;
 using Overlayer.Core;
 using System;
 using System.Linq;

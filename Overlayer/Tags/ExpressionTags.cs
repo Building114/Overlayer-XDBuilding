@@ -1,4 +1,4 @@
-﻿using NCalc;
+using NCalc;
 using Overlayer.Core.TextReplacing;
 using Overlayer.Tags.Attributes;
 using Overlayer.Utils;

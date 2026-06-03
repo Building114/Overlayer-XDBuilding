@@ -1,4 +1,4 @@
-﻿using Overlayer.Tags.Attributes;
+using Overlayer.Tags.Attributes;
 using System;
 using System.Threading;
 using UnityEngine.Profiling;

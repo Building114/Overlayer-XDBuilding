@@ -1,4 +1,4 @@
-﻿using Overlayer.Tags.Attributes;
+using Overlayer.Tags.Attributes;
 using System.Collections.Generic;
 
 namespace Overlayer.Tags;

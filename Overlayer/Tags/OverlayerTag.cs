@@ -1,4 +1,4 @@
-﻿using Overlayer.Core.TextReplacing;
+using Overlayer.Core.TextReplacing;
 using Overlayer.Tags.Attributes;
 using Overlayer.Utils;
 using System;

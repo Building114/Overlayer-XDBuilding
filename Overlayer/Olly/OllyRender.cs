@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 using static Overlayer.Olly.OllyResources;
 using static Overlayer.Olly.OllyState;

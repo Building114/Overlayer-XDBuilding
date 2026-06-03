@@ -1,4 +1,4 @@
-﻿using ADOFAI;
+using ADOFAI;
 using Overlayer.Tags.Attributes;
 using Overlayer.Utils;
 

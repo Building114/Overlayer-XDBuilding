@@ -1,4 +1,4 @@
-﻿using DG.Tweening;
+using DG.Tweening;
 using Overlayer.Core;
 using RapidGUI;
 using System.Collections;

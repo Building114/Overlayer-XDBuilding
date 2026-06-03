@@ -1,4 +1,4 @@
-﻿using MonsterLove.StateMachine;
+using MonsterLove.StateMachine;
 using Overlayer.Core.Patches;
 using System;
 

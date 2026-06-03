@@ -1,4 +1,4 @@
-﻿using Overlayer.Core.Interfaces;
+using Overlayer.Core.Interfaces;
 using System;
 
 namespace Overlayer.Core;
